@@ -1,0 +1,50 @@
+# ---- Données ----
+# Le dataset brut (45 Mo) dépasse la limite confortable de GitHub : il se retélécharge
+# depuis UCI (voir README). On ne versionne aucune donnée, seulement le code.
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+*.xlsx
+*.xls
+*.parquet
+*.pkl
+*.joblib
+
+# ---- Figures générées ----
+# (décommenter la ligne suivante si vous préférez ne pas versionner les PNG)
+# figures/*.png
+
+# ---- RAG / index vectoriel (extension) ----
+rag/vector_store/
+*.faiss
+chroma/
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.venv*/
+venv/
+env/
+.python-version
+
+# ---- Jupyter ----
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+Untitled*.ipynb
+
+# ---- Streamlit ----
+.streamlit/secrets.toml
+
+# ---- OS / IDE ----
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# ---- Divers ----
+.env
+*.log
