@@ -17,7 +17,7 @@ cd client-scope-rfm-project
 conda env create -f environment.yml
 conda activate client-scope-rfm
 
-pip install nbstripout
+# nbstripout est déjà installé via environment.yml — reste à l'activer pour ce dépôt :
 nbstripout --install
 ```
 

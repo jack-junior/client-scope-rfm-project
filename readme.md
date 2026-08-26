@@ -68,14 +68,62 @@ conda activate client-scope-rfm
 pip install -r requirements.txt
 conda env export --no-builds > environment.yml
 ```
+### 3.4 Enregistrer le kernel Jupyter du projet
 
-### 3.4 Lancer Jupyter
+`ipykernel` est inclus dans `environment.yml`. Enregistrer un kernel **dédié au projet**
+(plutôt que d'utiliser le kernel `python3` par défaut de Jupyter) évite la cause la plus
+fréquente d'erreurs de kernel : un notebook exécuté avec un environnement Python différent
+de celui où les dépendances ont été installées.
+
+```bash
+python -m ipykernel install --user --name tp2-rfm --display-name "Python (tp2-rfm)"
+```
+
+> Le nom `tp2-rfm` est imposé à toute l'équipe : dans Jupyter, sélectionner
+> **Kernel → Change Kernel → Python (tp2-rfm)** avant d'exécuter un notebook. Un nom de
+> kernel différent d'un membre à l'autre n'empêche pas l'exécution, mais casse la
+> reproductibilité attendue lors de la remise (voir `DEPLOYMENT.md` §9, checklist
+> `REPARTITION_EQUIPE.md` §7).
+
+### 3.5 Activer le filtre nbstripout (obligatoire pour contribuer)
+
+`nbstripout` est inclus dans `environment.yml`. Il retire automatiquement les sorties des
+notebooks (résultats, images en base64) au moment du `git add`, pour éviter des diffs
+Git illisibles entre membres. Il doit être **activé sur chaque poste** après le clone :
+
+```bash
+nbstripout --install
+```
+
+Voir `CONTRIBUTING.md` pour le détail du flux de travail Git (branches, commits,
+répartition par partie).
+
+### 3.6 Lancer Jupyter
 
 ```bash
 jupyter lab
 ```
 
 Puis ouvrir les notebooks dans `notebooks/`, dans l'ordre numéroté (voir §5).
+
+---
+
+### 3.7 Dépendances avancées
+
+En plus des bibliothèques cœur (nettoyage, RFM, clustering), `environment.yml` et
+`requirements.txt` incluent des paquets liés à des usages spécifiques du projet :
+
+| Paquet | Usage |
+|---|---|
+| `pyarrow` | Lecture/écriture au format `.parquet` pour `data/interim/` et `data/processed/` — plus rapide et plus compact que `.csv` sur des jeux de données volumineux. |
+| `lifetimes` | Modélisation de la valeur vie client (CLV), extension possible de l'analyse RFM au-delà de la segmentation de base. |
+| `streamlit` | Tableau de bord interactif pour présenter les segments, en complément des notebooks (facultatif). |
+| `chromadb` + `sentence-transformers` | Base vectorielle et embeddings pour le **bonus** du sujet (§3.8 de l'énoncé) : interrogation en langage naturel des résultats de segmentation. |
+
+Ces dépendances sont installées avec le reste de l'environnement (`conda env create -f
+environment.yml`) — aucune commande `pip install` séparée n'est nécessaire. Elles ne sont
+pas utilisées par le pipeline principal (parties 1 à 4) et ne sont mobilisées que si votre
+équipe décide de traiter le bonus ou d'ajouter un tableau de bord.
 
 ---
 
