@@ -76,11 +76,11 @@ fréquente d'erreurs de kernel : un notebook exécuté avec un environnement Pyt
 de celui où les dépendances ont été installées.
 
 ```bash
-python -m ipykernel install --user --name tp2-rfm --display-name "Python (tp2-rfm)"
+python -m ipykernel install --user --name client-scope-rfm --display-name "Python (client-scope-rfm)"
 ```
 
-> Le nom `tp2-rfm` est imposé à toute l'équipe : dans Jupyter, sélectionner
-> **Kernel → Change Kernel → Python (tp2-rfm)** avant d'exécuter un notebook. Un nom de
+> Le nom `client-scope-rfm` est imposé à toute l'équipe : dans Jupyter, sélectionner
+> **Kernel → Change Kernel → Python (client-scope-rfm)** avant d'exécuter un notebook. Un nom de
 > kernel différent d'un membre à l'autre n'empêche pas l'exécution, mais casse la
 > reproductibilité attendue lors de la remise (voir `DEPLOYMENT.md` §9, checklist
 > `REPARTITION_EQUIPE.md` §7).
