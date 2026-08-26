@@ -20,6 +20,7 @@ figures/*
 
 ## Archives de données téléchargées
 *.zip
+*.csv
 *.xlsx
 *.xls
 !reports/tableau_synthese_segments.csv
