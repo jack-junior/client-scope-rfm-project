@@ -1,7 +1,9 @@
-# ClientScope
+# TP2 — Segmentation clients RFM
 
-Segmentation client **RFM** (Récence · Fréquence · Montant) sur 1,07 M de transactions
-e-commerce, avec clustering K-means et recommandations marketing par segment.
+**Segmentation RFM des clients — Online Retail II**
+*Programme TAISS 2026 — Filière F1 (Data Science)*
+
+Segmentation de la clientèle d'un e-commerce britannique de cadeaux à partir de son historique de transactions (2009-2011), selon la méthode **RFM (Récence, Fréquence, Montant)**, en vue de recommandations marketing actionnables par segment.
 
 <p>
 <img alt="Python" src="https://img.shields.io/badge/python-3.11-blue">
@@ -9,99 +11,178 @@ e-commerce, avec clustering K-means et recommandations marketing par segment.
 <img alt="statut" src="https://img.shields.io/badge/statut-en%20cours-yellow">
 </p>
 
-TAISS 2026 · Togo AI Summer School · Filière Data Science · TP2
+---
+
+## 1. Contexte et objectif
+
+Un e-commerce cumulant plus d'un million de transactions sur deux ans souhaite personnaliser ses campagnes marketing et réduire son attrition, sans disposer d'une typologie de sa clientèle. Ce projet construit une segmentation basée sur le comportement d'achat (RFM + clustering K-means), caractérise chaque segment et formule des recommandations marketing associées.
+
+Jeu de données : [UCI Online Retail II](https://archive.ics.uci.edu/dataset/502/online+retail+ii) (transactions réelles, ~1M lignes, ~37 pays).
 
 ---
 
-## Aperçu
+## 2. Prérequis
 
-| | |
+| Outil | Version recommandée |
 |---|---|
-| Source | [UCI Online Retail II](https://archive.ics.uci.edu/dataset/502/online+retail+ii) |
-| Période | déc. 2009 → déc. 2011 |
-| Transactions | 1 067 371 brutes → 776 582 nettoyées |
-| Clients | 5 852 · 41 pays · 17,1 M£ |
+| OS | Linux (Ubuntu 22.04+ ou équivalent) |
+| Gestionnaire d'environnement | Anaconda ou Miniconda |
+| Python | 3.10+ |
+| Interface notebooks | Jupyter Notebook / JupyterLab |
+| Gestion de version | Git / GitHub |
 
-## Installation
+> Miniconda est suffisant et plus léger qu'Anaconda complet ; les deux fonctionnent indifféremment pour ce projet.
+
+---
+
+## 3. Installation et mise en place de l'environnement
+
+### 3.1 Installer Miniconda (si non déjà installé)
 
 ```bash
-git clone https://github.com/jack-junior/client-scope-rfm-project.git
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+bash miniconda.sh -b -p "$HOME/miniconda3"
+source "$HOME/miniconda3/etc/profile.d/conda.sh"
+conda init bash
+```
+
+### 3.2 Cloner le dépôt
+
+```bash
+git clone <url-du-depot>
 cd client-scope-rfm-project
-
-python -m venv .venv
-source .venv/bin/activate          # Windows : .venv\Scripts\activate
-pip install -r requirements.txt
-
-pip install nbstripout && nbstripout --install    # voir CONTRIBUTING.md
 ```
 
-## Données
-
-Le dataset (45 Mo) n'est pas versionné.
+### 3.3 Créer et activer l'environnement conda
 
 ```bash
-curl -L -o retail.zip https://archive.ics.uci.edu/static/public/502/online+retail+ii.zip
-unzip retail.zip -d data/raw/
+conda env create -f environment.yml
+conda activate client-scope-rfm
 ```
 
-Attendu : `data/raw/online_retail_II.xlsx`
+Si `environment.yml` n'est pas encore généré, créer l'environnement manuellement puis exporter :
 
-## Utilisation
+```bash
+conda create -n client-scope-rfm python=3.10 -y
+conda activate client-scope-rfm
+pip install -r requirements.txt
+conda env export --no-builds > environment.yml
+```
+
+### 3.4 Lancer Jupyter
 
 ```bash
 jupyter lab
 ```
 
-Exécuter les notebooks dans l'ordre — chacun lit les sorties du précédent dans
-`data/processed/`, aucun ne relit l'Excel brut.
+Puis ouvrir les notebooks dans `notebooks/`, dans l'ordre numéroté (voir §5).
 
-| Notebook | Contenu |
-|---|---|
-| `01_nettoyage.ipynb` | doublons, écritures non-produit, annulations, lignes sans client |
-| `02_features_rfm.ipynb` | agrégation par client, transformation log + standardisation |
-| `03_clustering.ipynb` | K-means, choix de *k* (coude, silhouette, stabilité) |
-| `04_caracterisation.ipynb` | nommage des segments, tableau de synthèse, recommandations |
+---
 
-Dashboard interactif (après `04`) :
+## 4. Récupération des données
 
+Les données brutes ne sont **pas versionnées** dans le dépôt (fichier volumineux). Deux options :
+
+**Option A — téléchargement manuel**
 ```bash
-streamlit run app/dashboard.py
+mkdir -p data/raw
+wget https://archive.ics.uci.edu/static/public/502/online+retail+ii.zip -O data/raw/online_retail_ii.zip
+unzip data/raw/online_retail_ii.zip -d data/raw/
 ```
 
-## Structure
-
-```
-data/raw/          dataset brut (non versionné)
-data/processed/    transactions nettoyées + features RFM (non versionné)
-notebooks/         01 → 04 + 05_avance/ (CLV, robustesse, RAG)
-figures/           coude, silhouette, distributions
-report/            rapport 2-3 pages
-app/               dashboard Streamlit
-rag/               index vectoriel de l'assistant
+**Option B — via `ucimlrepo` (dans un notebook ou script Python)**
+```python
+from ucimlrepo import fetch_ucirepo
+online_retail_ii = fetch_ucirepo(id=502)
 ```
 
-## Choix méthodologiques
+Le fichier source contient deux feuilles Excel (« Year 2009-2010 » et « Year 2010-2011 ») à concaténer ; cette étape est réalisée dans `notebooks/01_nettoyage.ipynb`.
 
-Les décisions structurantes — snapshot figé au 10/12/2011, Fréquence comptée en factures
-distinctes, conservation des montants extrêmes, transformation `log1p` avant
-standardisation, traitement de la corrélation Fréquence/Montant — sont argumentées dans les
-notebooks et synthétisées dans [`report/`](report/).
+---
 
-## Reproductibilité
+## 5. Structure du projet
 
-Graines fixées (`random_state=42`) · journal de nettoyage exporté en CSV ·
-`StandardScaler` sérialisé pour retransformer les centroïdes en unités métier.
+```
+client-scope-rfm/
+├── README.md                       # ce fichier
+├── environment.yml                 # environnement conda (reproductible)
+├── requirements.txt                # dépendances pip (alternative/complément)
+├── data/
+│   ├── raw/                        # données brutes, non versionnées, jamais modifiées
+│   ├── interim/                    # étapes intermédiaires (post-nettoyage)
+│   └── processed/                  # jeu de données final prêt pour le clustering
+├── notebooks/
+│   ├── 01_nettoyage.ipynb          # Partie 1 — nettoyage des transactions
+│   ├── 02_features_rfm.ipynb       # Partie 2 — construction et transformation RFM
+│   ├── 03_clustering_choix_k.ipynb # Partie 3 — clustering et choix de k
+│   └── 04_caracterisation_segments.ipynb  # Partie 4 — caractérisation et recommandations
+├── src/                             # fonctions réutilisables extraites des notebooks
+│   ├── cleaning.py
+│   ├── features.py
+│   └── clustering.py
+├── figures/                         # graphiques exportés (coude, silhouette, distributions)
+├── reports/
+│   ├── rapport_tp2.pdf             # rapport final (2-3 pages) — Partie 5 incluse
+│   └── tableau_synthese_segments.csv
+└── outputs/
+    └── customers_segmented.csv     # jeu de données final avec segment assigné
+```
 
-## Contribuer
+**Principes :**
+- `data/raw/` en lecture seule : toute transformation produit un nouveau fichier dans `interim/` ou `processed/`, jamais d'écrasement des données sources.
+- Un notebook correspond à une étape du pipeline, exécutée dans l'ordre numéroté.
+- Le code réutilisable est centralisé dans `src/` plutôt que dupliqué entre notebooks.
 
-Voir [CONTRIBUTING.md](CONTRIBUTING.md).
+---
 
-## Équipe
+## 6. Ordre d'exécution du pipeline
 
-| Nom | Partie |
+| Étape | Notebook | Entrée | Sortie |
+|---|---|---|---|
+| 1 | `01_nettoyage.ipynb` | `data/raw/online_retail_ii.xlsx` | `data/interim/transactions_clean.csv` |
+| 2 | `02_features_rfm.ipynb` | `data/interim/transactions_clean.csv` | `data/processed/customers_rfm.csv` |
+| 3 | `03_clustering_choix_k.ipynb` | `data/processed/customers_rfm.csv` | `outputs/customers_segmented.csv`, figures dans `figures/` |
+| 4 | `04_caracterisation_segments.ipynb` | `outputs/customers_segmented.csv` | `reports/tableau_synthese_segments.csv` |
+
+Exécuter les notebooks **dans cet ordre** ; chacun dépend de la sortie du précédent.
+
+---
+
+## 7. Conventions du projet
+
+### 7.1 Nommage
+- Fichiers et notebooks : `snake_case`, préfixe numérique pour les notebooks (`01_`, `02_`, …).
+- Variables et fonctions Python : `snake_case`, explicites (`compute_rfm_features()`, `df_transactions_clean`).
+- Colonnes calculées : minuscules, sans accent (`recence`, `frequence`, `montant`, `montant_log`).
+- Colonne d'assignation de segment : nom fixe unique dans tout le pipeline → `segment`.
+- Noms de segments (identiques partout : notebook, tableau, rapport) : `Champions`, `Fidèles`, `À risque`, `Endormis`, `Nouveaux`, `Perdus`.
+
+### 7.2 Reproductibilité
+- `random_state=42` fixé partout où un algorithme stochastique est utilisé (K-means, split, etc.).
+- Environnement figé via `environment.yml` (conda) et/ou `requirements.txt` (pip) — toute mise à jour de dépendance doit être suivie d'une réexportation.
+- Aucune modification manuelle des fichiers dans `data/raw/`.
+
+### 7.3 Git
+- Branches : `type/description-courte` (ex. `feat/nettoyage-annulations`, `fix/valeurs-aberrantes-prix`).
+- Commits : verbe à l'infinitif, langue cohérente sur tout le projet.
+- `data/raw/` exclu du versionnement (voir `.gitignore`).
+
+---
+
+## 8. Livrables du projet
+
+- Notebooks complétés (parties 1 à 4) — voir `notebooks/`
+- Jeu de clients nettoyé avec features RFM documentées — `data/processed/customers_rfm.csv`
+- Choix de *k* argumenté (graphique + justification) — `figures/` et `reports/rapport_tp2.pdf`
+- Tableau de synthèse des segments — `reports/tableau_synthese_segments.csv`
+- Rapport de 2 à 3 pages (méthode, choix, limites, réponses aux 6 questions du sujet) — `reports/rapport_tp2.pdf`
+
+---
+
+## 9. Auteurs
+
+*(à compléter par l'équipe)*
+
+| Nom | Rôle / parties principales |
 |---|---|
-| *à compléter* | |
-
-## Licence
-
-Données : UCI Machine Learning Repository (Dr Daqing Chen). Code sous licence MIT.
+| … | … |

@@ -1,0 +1,34 @@
+# Données volumineuses (récupérées à l'exécution, pas au build)
+data/raw/*
+data/interim/*
+data/processed/*
+!data/raw/.gitkeep
+!data/interim/.gitkeep
+!data/processed/.gitkeep
+
+# Environnement et cache Python
+.conda/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.pytest_cache/
+
+# Environnement local et secrets
+.env
+.venv/
+
+# Git et éditeurs
+.git/
+.gitignore
+.vscode/
+.idea/
+
+# Sorties déjà générées localement (recréées dans le conteneur)
+outputs/*
+figures/*
+!outputs/.gitkeep
+!figures/.gitkeep
+
+# Divers
+*.log
+.DS_Store

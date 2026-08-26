@@ -1,0 +1,37 @@
+services:
+  jupyter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: client-scope-rfm:latest
+    container_name: client-scope-rfm-jupyter
+    restart: unless-stopped
+    ports:
+      - "${JUPYTER_HOST_PORT:-8888}:8888"
+    environment:
+      - JUPYTER_TOKEN=${JUPYTER_TOKEN:?Veuillez définir JUPYTER_TOKEN dans le fichier .env}
+    volumes:
+      # Code et notebooks : montés en lecture-écriture pour permettre l'édition live
+      - ./notebooks:/home/jovyan/work/notebooks
+      - ./src:/home/jovyan/work/src
+      # Données : volumes nommés pour persister au-delà du cycle de vie du conteneur
+      - data_raw:/home/jovyan/work/data/raw
+      - data_interim:/home/jovyan/work/data/interim
+      - data_processed:/home/jovyan/work/data/processed
+      - outputs:/home/jovyan/work/outputs
+      - reports:/home/jovyan/work/reports
+      - figures:/home/jovyan/work/figures
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/api"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+volumes:
+  data_raw:
+  data_interim:
+  data_processed:
+  outputs:
+  reports:
+  figures:
