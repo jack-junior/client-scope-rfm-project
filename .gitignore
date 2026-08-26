@@ -1,50 +1,78 @@
-# ---- Données ----
-# Le dataset brut (45 Mo) dépasse la limite confortable de GitHub : il se retélécharge
-# depuis UCI (voir README). On ne versionne aucune donnée, seulement le code.
+## ============================================================
+## .gitignore — TP2 Segmentation clients RFM (TAISS 2026)
+## ============================================================
+
+## --- Données ---
+## Les données brutes/intermédiaires/traitées ne sont pas versionnées
+## (volumineuses et régénérables via le pipeline / le téléchargement décrit dans README.md)
 data/raw/*
-!data/raw/.gitkeep
+data/interim/*
 data/processed/*
+!data/raw/.gitkeep
+!data/interim/.gitkeep
 !data/processed/.gitkeep
+
+## Sorties et résultats régénérables
+outputs/*
+figures/*
+!outputs/.gitkeep
+!figures/.gitkeep
+
+## Archives de données téléchargées
+*.zip
 *.xlsx
 *.xls
-*.parquet
-*.pkl
-*.joblib
+!reports/tableau_synthese_segments.csv
 
-# ---- Figures générées ----
-# (décommenter la ligne suivante si vous préférez ne pas versionner les PNG)
-# figures/*.png
+## --- Secrets et configuration locale ---
+.env
+.env.*
+!.env.example
 
-# ---- RAG / index vectoriel (extension) ----
-rag/vector_store/
-*.faiss
-chroma/
-
-# ---- Python ----
+## --- Environnement Python / Conda ---
+.conda/
+envs/
+*.egg-info/
 __pycache__/
 *.py[cod]
-*.egg-info/
+*.pyo
 .venv/
-.venv*/
 venv/
 env/
-.python-version
 
-# ---- Jupyter ----
+## --- Jupyter ---
 .ipynb_checkpoints/
-*/.ipynb_checkpoints/
-Untitled*.ipynb
+*/.ipynb_checkpoints/*
 
-# ---- Streamlit ----
-.streamlit/secrets.toml
+## --- Rapport (fichiers sources non finaux) ---
+reports/*.docx
+reports/*~
+reports/*.aux
+reports/*.toc
+reports/*.log
+## Le PDF final du rapport reste versionné :
+!reports/rapport_tp2.pdf
 
-# ---- OS / IDE ----
+## --- Docker ---
+## (les fichiers de configuration Dockerfile/docker-compose.yml SONT versionnés,
+##  seuls les artefacts de build/volumes locaux sont ignorés)
+docker-compose.override.yml
+*.pid
+
+## --- Système d'exploitation ---
 .DS_Store
 Thumbs.db
 desktop.ini
+
+## --- Éditeurs / IDE ---
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
 
-# ---- Divers ----
-.env
+## --- Logs et fichiers temporaires ---
 *.log
+*.tmp
+.pytest_cache/
+.mypy_cache/
