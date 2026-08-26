@@ -101,9 +101,6 @@ Quelques pistes, à choisir selon le ton souhaité (sobre/institutionnel vs. év
 - **« SegmentAfrique »** ou **« RFM-Africa »** — si vous voulez mettre en avant la dimension de transposabilité vers un e-commerce/paiement mobile ouest-africain.
 - **« Cibler pour Fidéliser »** — orienté objectif métier (personnalisation + rétention).
 - **« Online Retail II — Typologie Client par RFM »** — nom descriptif académique, adapté si le jury attend un intitulé formel et traçable au jeu de données utilisé.
-
-*Recommandation* : pour un rendu académique (TAISS), privilégiez un nom descriptif et traçable, par exemple **« Segmentation RFM des clients — Online Retail II »**, éventuellement complété d'un sous-titre orienté impact (« vers une personnalisation marketing actionnable »).
-
 ---
 
 ## 5. Protocole de résolution étape par étape
