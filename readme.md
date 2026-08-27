@@ -119,11 +119,17 @@ En plus des bibliothèques cœur (nettoyage, RFM, clustering), `environment.yml`
 | `pyarrow`                              | Lecture/écriture au format`.parquet` pour `data/interim/` et `data/processed/` — plus rapide et plus compact que `.csv` sur des jeux de données volumineux. |
 | `lifetimes`                            | Modélisation de la valeur vie client (CLV), extension possible de l'analyse RFM au-delà de la segmentation de base.                                                  |
 | `streamlit`                            | Tableau de bord interactif pour présenter les segments, en complément des notebooks (facultatif).                                                                    |
-| `chromadb` + `sentence-transformers` | Base vectorielle et embeddings pour le**bonus** du sujet (§3.8 de l'énoncé) : interrogation en langage naturel des résultats de segmentation.                |
+| `chromadb` + `sentence-transformers` | Base vectorielle, embeddings et re-ranking pour l'interrogation en langage naturel des résultats de segmentation. |
 
-Ces dépendances sont installées avec le reste de l'environnement (`conda env create -f environment.yml`) — aucune commande `pip install` séparée n'est nécessaire. Elles ne sont
-pas utilisées par le pipeline principal (parties 1 à 4) et ne sont mobilisées que si votre
-équipe décide de traiter le bonus ou d'ajouter un tableau de bord.
+Ces dépendances sont installées avec le reste de l'environnement (`conda env create -f environment.yml`) — aucune commande `pip install` séparée n'est nécessaire. Elles ne sont pas utilisées par le pipeline RFM principal, mais sont mobilisées par la couche d'interrogation en langage naturel décrite dans [docs/llm-rag-openmind.md](docs/llm-rag-openmind.md).
+
+### 3.8 Interrogation en langage naturel des résultats (RAG)
+
+Le projet répond à l'exigence d'ajouter une couche d'interrogation en langage naturel des segments obtenus. Les résultats des notebooks 03 et 04 sont transformés en documents, découpés puis vectorisés dans ChromaDB avec `sentence-transformers`. Une recherche sémantique et un re-ranking sélectionnent le contexte pertinent, qui est ensuite transmis à un LLM externe accessible via Groq. Les réponses sont accompagnées de citations pour permettre leur vérification.
+
+Cette fonctionnalité s'appuie sur le projet open source [OpenMind RAG](https://github.com/cherif-tg/openmind). Le LLM est utilisé indépendamment de ce dépôt : aucune clé API n'est fournie ni stockée dans le projet. Les étapes d'indexation, les questions d'exemple, l'architecture, les limites et les règles de confidentialité sont décrites dans le [guide d'intégration OpenMind RAG](docs/llm-rag-openmind.md).
+
+**Pour l'évaluation :** cette section couvre explicitement le besoin « base vectorielle + LLM » : documents issus de la segmentation, embeddings, ChromaDB, recherche sémantique, re-ranking, génération via LLM et citations des sources.
 
 ---
 
@@ -165,12 +171,15 @@ client-scope-rfm/
 │   ├── 01_nettoyage.ipynb          # Partie 1 — nettoyage des transactions
 │   ├── 02_features_rfm.ipynb       # Partie 2 — construction et transformation RFM
 │   ├── 03_clustering_choix_k.ipynb # Partie 3 — clustering et choix de k
-│   └── 04_caracterisation_segments.ipynb  # Partie 4 — caractérisation et recommandations
+│   ├── 04_caracterisation_segments.ipynb  # Partie 4 — caractérisation et recommandations
+│   └── 05_recommendations.ipynb            # Synthèse des recommandations par segment
 ├── src/                             # fonctions réutilisables extraites des notebooks
 │   ├── cleaning.py
 │   ├── features.py
 │   └── clustering.py
 ├── figures/                         # graphiques exportés (coude, silhouette, distributions)
+├── docs/
+│   └── llm-rag-openmind.md          # Guide d'interrogation RAG et d'indexation
 ├── reports/
 │   ├── rapport_tp2.pdf             # rapport final (2-3 pages) — Partie 5 incluse
 │   └── tableau_synthese_segments.csv
