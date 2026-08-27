@@ -1,0 +1,6 @@
+etape,restant,retirees,commentaire,% du brut
+doublons exacts,1033036,34335,export + chevauchement des 2 feuilles,3.22
+lignes non-produit,1027221,5815,,0.54
+annulations mises de côté,1009307,17914,,1.68
+CustomerID manquant,776642,232665,non rattachable,21.8
+quantité ou prix <= 0,776582,60,,0.01

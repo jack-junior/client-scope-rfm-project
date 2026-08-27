@@ -1,0 +1,5 @@
+Segment,Constat,Action,Indicateur,Priorité
+Champions,"20 % des clients, 73 % du CA, dernier achat il y a moins d'un mois","Fidélisation premium : accès anticipé, contact commercial dédié, conditions de gros",rétention à 12 mois,1
+À risque,Bon historique mais plus d'achat depuis environ 7 mois,"Réactivation ciblée sur leurs références habituelles, offre limitée dans le temps",réachat à 60 jours,2
+Nouveaux / Prometteurs,"Achat récent mais 3 commandes en moyenne, panier modeste","Onboarding : recommandations croisées, remise sur la deuxième commande",passage à 3 commandes ou plus,2
+Perdus / Dormants,"Une seule commande, il y a plus d'un an, faible montant","Win-back à coût maîtrisé, sans remise agressive ; sortie de la base si sans réponse",coût par client réactivé,3

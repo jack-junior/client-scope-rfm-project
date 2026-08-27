@@ -1,0 +1,5 @@
+Segment,Constat,Action,Indicateur,Priorité
+Champions,"~20 % des clients, ~73 % du CA, achat il y a moins d'un mois","Programme de fidélité premium : accès anticipé aux nouveautés, contact commercial dédié, conditions de gros négociées","taux de rétention à 12 mois, CA moyen par client",1
+À risque,Bons acheteurs historiques mais silencieux depuis ~7 mois,Campagne de réactivation ciblée : email personnalisé sur leurs références habituelles + offre de retour limitée dans le temps,taux de réachat à 60 jours,2
+Nouveaux / Prometteurs,"Achat récent mais 3 commandes en moyenne, panier modeste","Séquence d'onboarding : recommandations croisées, remise sur la 2ᵉ commande, mise en avant du catalogue élargi",passage à 3+ commandes sous 6 mois,2
+Perdus / Dormants,"Une seule commande, il y a plus d'un an, faible montant","Campagne de win-back à coût maîtrisé (email de masse, pas de remise agressive) ; sortie de la base active si sans réponse",taux de réactivation ; coût par client réactivé,3
