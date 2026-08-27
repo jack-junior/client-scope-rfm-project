@@ -19,6 +19,8 @@ figures/*
 !figures/.gitkeep
 
 ## Archives de données téléchargées
+*.arquet
+*.csv
 *.zip
 *.xlsx
 *.xls
