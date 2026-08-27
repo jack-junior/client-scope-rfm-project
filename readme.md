@@ -23,13 +23,13 @@ Jeu de données : [UCI Online Retail II](https://archive.ics.uci.edu/dataset/502
 
 ## 2. Prérequis
 
-| Outil | Version recommandée |
-|---|---|
-| OS | Linux (Ubuntu 22.04+ ou équivalent) |
-| Gestionnaire d'environnement | Anaconda ou Miniconda |
-| Python | 3.10+ |
-| Interface notebooks | Jupyter Notebook / JupyterLab |
-| Gestion de version | Git / GitHub |
+| Outil                        | Version recommandée                 |
+| ---------------------------- | ------------------------------------ |
+| OS                           | Linux (Ubuntu 22.04+ ou équivalent) |
+| Gestionnaire d'environnement | Anaconda ou Miniconda                |
+| Python                       | 3.10+                                |
+| Interface notebooks          | Jupyter Notebook / JupyterLab        |
+| Gestion de version           | Git / GitHub                         |
 
 > Miniconda est suffisant et plus léger qu'Anaconda complet ; les deux fonctionnent indifféremment pour ce projet.
 
@@ -68,6 +68,7 @@ conda activate client-scope-rfm
 pip install -r requirements.txt
 conda env export --no-builds > environment.yml
 ```
+
 ### 3.4 Enregistrer le kernel Jupyter du projet
 
 `ipykernel` est inclus dans `environment.yml`. Enregistrer un kernel **dédié au projet**
@@ -113,15 +114,14 @@ Puis ouvrir les notebooks dans `notebooks/`, dans l'ordre numéroté (voir §5).
 En plus des bibliothèques cœur (nettoyage, RFM, clustering), `environment.yml` et
 `requirements.txt` incluent des paquets liés à des usages spécifiques du projet :
 
-| Paquet | Usage |
-|---|---|
-| `pyarrow` | Lecture/écriture au format `.parquet` pour `data/interim/` et `data/processed/` — plus rapide et plus compact que `.csv` sur des jeux de données volumineux. |
-| `lifetimes` | Modélisation de la valeur vie client (CLV), extension possible de l'analyse RFM au-delà de la segmentation de base. |
-| `streamlit` | Tableau de bord interactif pour présenter les segments, en complément des notebooks (facultatif). |
-| `chromadb` + `sentence-transformers` | Base vectorielle et embeddings pour le **bonus** du sujet (§3.8 de l'énoncé) : interrogation en langage naturel des résultats de segmentation. |
+| Paquet                                   | Usage                                                                                                                                                                  |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pyarrow`                              | Lecture/écriture au format`.parquet` pour `data/interim/` et `data/processed/` — plus rapide et plus compact que `.csv` sur des jeux de données volumineux. |
+| `lifetimes`                            | Modélisation de la valeur vie client (CLV), extension possible de l'analyse RFM au-delà de la segmentation de base.                                                  |
+| `streamlit`                            | Tableau de bord interactif pour présenter les segments, en complément des notebooks (facultatif).                                                                    |
+| `chromadb` + `sentence-transformers` | Base vectorielle et embeddings pour le**bonus** du sujet (§3.8 de l'énoncé) : interrogation en langage naturel des résultats de segmentation.                |
 
-Ces dépendances sont installées avec le reste de l'environnement (`conda env create -f
-environment.yml`) — aucune commande `pip install` séparée n'est nécessaire. Elles ne sont
+Ces dépendances sont installées avec le reste de l'environnement (`conda env create -f environment.yml`) — aucune commande `pip install` séparée n'est nécessaire. Elles ne sont
 pas utilisées par le pipeline principal (parties 1 à 4) et ne sont mobilisées que si votre
 équipe décide de traiter le bonus ou d'ajouter un tableau de bord.
 
@@ -132,6 +132,7 @@ pas utilisées par le pipeline principal (parties 1 à 4) et ne sont mobilisées
 Les données brutes ne sont **pas versionnées** dans le dépôt (fichier volumineux). Deux options :
 
 **Option A — téléchargement manuel**
+
 ```bash
 mkdir -p data/raw
 wget https://archive.ics.uci.edu/static/public/502/online+retail+ii.zip -O data/raw/online_retail_ii.zip
@@ -139,6 +140,7 @@ unzip data/raw/online_retail_ii.zip -d data/raw/
 ```
 
 **Option B — via `ucimlrepo` (dans un notebook ou script Python)**
+
 ```python
 from ucimlrepo import fetch_ucirepo
 online_retail_ii = fetch_ucirepo(id=502)
@@ -177,6 +179,7 @@ client-scope-rfm/
 ```
 
 **Principes :**
+
 - `data/raw/` en lecture seule : toute transformation produit un nouveau fichier dans `interim/` ou `processed/`, jamais d'écrasement des données sources.
 - Un notebook correspond à une étape du pipeline, exécutée dans l'ordre numéroté.
 - Le code réutilisable est centralisé dans `src/` plutôt que dupliqué entre notebooks.
@@ -185,12 +188,12 @@ client-scope-rfm/
 
 ## 6. Ordre d'exécution du pipeline
 
-| Étape | Notebook | Entrée | Sortie |
-|---|---|---|---|
-| 1 | `01_nettoyage.ipynb` | `data/raw/online_retail_ii.xlsx` | `data/interim/transactions_clean.csv` |
-| 2 | `02_features_rfm.ipynb` | `data/interim/transactions_clean.csv` | `data/processed/customers_rfm.csv` |
-| 3 | `03_clustering_choix_k.ipynb` | `data/processed/customers_rfm.csv` | `outputs/customers_segmented.csv`, figures dans `figures/` |
-| 4 | `04_caracterisation_segments.ipynb` | `outputs/customers_segmented.csv` | `reports/tableau_synthese_segments.csv` |
+| Étape | Notebook                              | Entrée                                 | Sortie                                                         |
+| ------ | ------------------------------------- | --------------------------------------- | -------------------------------------------------------------- |
+| 1      | `01_nettoyage.ipynb`                | `data/raw/online_retail_ii.xlsx`      | `data/interim/transactions_clean.csv`                        |
+| 2      | `02_features_rfm.ipynb`             | `data/interim/transactions_clean.csv` | `data/processed/customers_rfm.csv`                           |
+| 3      | `03_clustering_choix_k.ipynb`       | `data/processed/customers_rfm.csv`    | `outputs/customers_segmented.csv`, figures dans `figures/` |
+| 4      | `04_caracterisation_segments.ipynb` | `outputs/customers_segmented.csv`     | `reports/tableau_synthese_segments.csv`                      |
 
 Exécuter les notebooks **dans cet ordre** ; chacun dépend de la sortie du précédent.
 
@@ -199,6 +202,7 @@ Exécuter les notebooks **dans cet ordre** ; chacun dépend de la sortie du pré
 ## 7. Conventions du projet
 
 ### 7.1 Nommage
+
 - Fichiers et notebooks : `snake_case`, préfixe numérique pour les notebooks (`01_`, `02_`, …).
 - Variables et fonctions Python : `snake_case`, explicites (`compute_rfm_features()`, `df_transactions_clean`).
 - Colonnes calculées : minuscules, sans accent (`recence`, `frequence`, `montant`, `montant_log`).
@@ -206,11 +210,13 @@ Exécuter les notebooks **dans cet ordre** ; chacun dépend de la sortie du pré
 - Noms de segments (identiques partout : notebook, tableau, rapport) : `Champions`, `Fidèles`, `À risque`, `Endormis`, `Nouveaux`, `Perdus`.
 
 ### 7.2 Reproductibilité
+
 - `random_state=42` fixé partout où un algorithme stochastique est utilisé (K-means, split, etc.).
 - Environnement figé via `environment.yml` (conda) et/ou `requirements.txt` (pip) — toute mise à jour de dépendance doit être suivie d'une réexportation.
 - Aucune modification manuelle des fichiers dans `data/raw/`.
 
 ### 7.3 Git
+
 - Branches : `type/description-courte` (ex. `feat/nettoyage-annulations`, `fix/valeurs-aberrantes-prix`).
 - Commits : verbe à l'infinitif, langue cohérente sur tout le projet.
 - `data/raw/` exclu du versionnement (voir `.gitignore`).
@@ -232,5 +238,5 @@ Exécuter les notebooks **dans cet ordre** ; chacun dépend de la sortie du pré
 *(à compléter par l'équipe)*
 
 | Nom | Rôle / parties principales |
-|---|---|
-| … | … |
+| --- | --------------------------- |
+| …  | …                          |
