@@ -246,7 +246,7 @@ Exécuter les notebooks **dans cet ordre** ; chacun dépend de la sortie du pré
 
 | Nom | Rôle / parties principales |
 | --- | --------------------------- |
-| GAYI Komi Selassi | Reporting                          |
+| GAYI Komi Selassi | Data cleaning, Features RFM, Clustering and k-means, reporting |
 | ACOTIE Sam | Data cleaning, Features RFM, Reporting|
 | ASSI Magnim Boris | Features RFM, Reporting |
 | ⁠Clement TETTEH ASIAKOLEY | Data cleaning, Features RFM, Clustering and k-means, reporting|
