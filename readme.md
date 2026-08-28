@@ -3,19 +3,19 @@
 **Segmentation RFM des clients — Online Retail II**
 *Programme TAISS 2026 — Filière F1 (Data Science)*
 
-Segmentation de la clientèle d'un e-commerce britannique de cadeaux à partir de son historique de transactions (2009-2011), selon la méthode **RFM (Récence, Fréquence, Montant)**, en vue de recommandations marketing actionnables par segment.
+Segmentation de la clientèle d'un e-commerce britannique de cadeaux à partir de son historique de transactions (2009-2011), selon la méthode **RFM (Récence, Fréquence, Montant)**, en vue de re[...]
 
 <p>
 <img alt="Python" src="https://img.shields.io/badge/python-3.11-blue">
 <img alt="scikit-learn" src="https://img.shields.io/badge/scikit--learn-1.5-orange">
-<img alt="statut" src="https://img.shields.io/badge/statut-en%20cours-yellow">
+<img alt="statut" src="https://img.shields.io/badge/statut-termin%C3%A9-brightgreen">
 </p>
 
 ---
 
 ## 1. Contexte et objectif
 
-Un e-commerce cumulant plus d'un million de transactions sur deux ans souhaite personnaliser ses campagnes marketing et réduire son attrition, sans disposer d'une typologie de sa clientèle. Ce projet construit une segmentation basée sur le comportement d'achat (RFM + clustering K-means), caractérise chaque segment et formule des recommandations marketing associées.
+Un e-commerce cumulant plus d'un million de transactions sur deux ans souhaite personnaliser ses campagnes marketing et réduire son attrition, sans disposer d'une typologie de sa clientèle. Ce p[...]
 
 Jeu de données : [UCI Online Retail II](https://archive.ics.uci.edu/dataset/502/online+retail+ii) (transactions réelles, ~1M lignes, ~37 pays).
 
@@ -114,22 +114,22 @@ Puis ouvrir les notebooks dans `notebooks/`, dans l'ordre numéroté (voir §5).
 En plus des bibliothèques cœur (nettoyage, RFM, clustering), `environment.yml` et
 `requirements.txt` incluent des paquets liés à des usages spécifiques du projet :
 
-| Paquet                                   | Usage                                                                                                                                                                  |
-| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pyarrow`                              | Lecture/écriture au format`.parquet` pour `data/interim/` et `data/processed/` — plus rapide et plus compact que `.csv` sur des jeux de données volumineux. |
-| `lifetimes`                            | Modélisation de la valeur vie client (CLV), extension possible de l'analyse RFM au-delà de la segmentation de base.                                                  |
-| `streamlit`                            | Tableau de bord interactif pour présenter les segments, en complément des notebooks (facultatif).                                                                    |
+| Paquet                                   | Usage                                                                                                                                                 [...]
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------[...]
+| `pyarrow`                              | Lecture/écriture au format`.parquet` pour `data/interim/` et `data/processed/` — plus rapide et plus compact que `.csv` sur des jeux de données volu[...]
+| `lifetimes`                            | Modélisation de la valeur vie client (CLV), extension possible de l'analyse RFM au-delà de la segmentation de base.                                   [...]
+| `streamlit`                            | Tableau de bord interactif pour présenter les segments, en complément des notebooks (facultatif).                                                     [...]
 | `chromadb` + `sentence-transformers` | Base vectorielle, embeddings et re-ranking pour l'interrogation en langage naturel des résultats de segmentation. |
 
-Ces dépendances sont installées avec le reste de l'environnement (`conda env create -f environment.yml`) — aucune commande `pip install` séparée n'est nécessaire. Elles ne sont pas utilisées par le pipeline RFM principal, mais sont mobilisées par la couche d'interrogation en langage naturel décrite dans [docs/llm-rag-openmind.md](docs/llm-rag-openmind.md).
+Ces dépendances sont installées avec le reste de l'environnement (`conda env create -f environment.yml`) — aucune commande `pip install` séparée n'est nécessaire. Elles ne sont pas utilis�[...]
 
 ### 3.8 Interrogation en langage naturel des résultats (RAG)
 
-Le projet répond à l'exigence d'ajouter une couche d'interrogation en langage naturel des segments obtenus. Les résultats des notebooks 03 et 04 sont transformés en documents, découpés puis vectorisés dans ChromaDB avec `sentence-transformers`. Une recherche sémantique et un re-ranking sélectionnent le contexte pertinent, qui est ensuite transmis à un LLM externe accessible via Groq. Les réponses sont accompagnées de citations pour permettre leur vérification.
+Le projet répond à l'exigence d'ajouter une couche d'interrogation en langage naturel des segments obtenus. Les résultats des notebooks 03 et 04 sont transformés en documents, découpés puis[...]
 
-Cette fonctionnalité s'appuie sur le projet open source [OpenMind RAG](https://github.com/cherif-tg/openmind). Le LLM est utilisé indépendamment de ce dépôt : aucune clé API n'est fournie ni stockée dans le projet. Les étapes d'indexation, les questions d'exemple, l'architecture, les limites et les règles de confidentialité sont décrites dans le [guide d'intégration OpenMind RAG](docs/llm-rag-openmind.md).
+Cette fonctionnalité s'appuie sur le projet open source [OpenMind RAG](https://github.com/cherif-tg/openmind). Le LLM est utilisé indépendamment de ce dépôt : aucune clé API n'est fournie n[...]
 
-**Pour l'évaluation :** cette section couvre explicitement le besoin « base vectorielle + LLM » : documents issus de la segmentation, embeddings, ChromaDB, recherche sémantique, re-ranking, génération via LLM et citations des sources.
+**Pour l'évaluation :** cette section couvre explicitement le besoin « base vectorielle + LLM » : documents issus de la segmentation, embeddings, ChromaDB, recherche sémantique, re-ranking, g[...]
 
 ---
 
@@ -141,7 +141,7 @@ Les données brutes ne sont **pas versionnées** dans le dépôt (fichier volumi
 
 ```bash
 mkdir -p data/raw
-wget https://archive.ics.uci.edu/static/public/502/online+retail+ii.zip -O data/raw/online_retail_ii.zip
+wget https://archive.ics.uci.edu/static/public/502/online_retail_ii.zip -O data/raw/online_retail_ii.zip
 unzip data/raw/online_retail_ii.zip -d data/raw/
 ```
 
