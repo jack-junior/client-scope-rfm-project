@@ -30,14 +30,23 @@ Patch release (from v0.2.0): completed project release.
 
 1. Clone the repository:
    git clone https://github.com/jack-junior/client-scope-rfm-project.git
-2. (Optional) Build the Docker image and run the container:
+   cd client-scope-rfm-project
+2. Option A - Docker (recommended for reproducibility):
    docker build -t client-scope-rfm-project .
    docker run --rm -p 8888:8888 client-scope-rfm-project
-3. Or install dependencies locally and run notebooks:
-   python -m venv .venv
-   source .venv/bin/activate   # or .venv\Scripts\activate on Windows
-   pip install -r requirements.txt
+   Open the Jupyter Lab URL shown in the container logs.
+3. Option B - Local Conda environment (recommended on Linux):
+   Install Anaconda or Miniconda if needed, then create and activate the project environment:
+   conda env create -f environment.yml
+   conda activate client-scope-rfm
+   Register the project Jupyter kernel:
+   python -m ipykernel install --user --name client-scope-rfm --display-name "Python (client-scope-rfm)"
+   Enable notebook output filtering for contributions:
+   nbstripout --install
+   Launch JupyterLab:
    jupyter lab
+   Select the "Python (client-scope-rfm)" kernel, then run the notebooks in numbered order.
+4. Data: the analysis uses the UCI Online Retail II dataset. Download or place the expected CSV files in `data/` as described in the notebooks, or update the notebook input paths.
 
 ### Notes
 
