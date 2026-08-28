@@ -235,17 +235,27 @@ Exécuter les notebooks **dans cet ordre** ; chacun dépend de la sortie du pré
 ## 8. Livrables du projet
 
 - Notebooks complétés (parties 1 à 4) — voir `notebooks/`
-- Jeu de clients nettoyé avec features RFM documentées — `data/processed/customers_rfm.csv`
-- Choix de *k* argumenté (graphique + justification) — `figures/` et `reports/rapport_tp2.pdf`
+- Jeu de clients nettoyé avec features RFM documentées — `data/processed/rfm_data_processed.csv, data/processed/features_rfm_data.csv`
+- Choix de *k* argumenté (graphique + justification) — `figures/` et `reports/Rapport_ClientScopeRFM_Complete_Corrige.pdf`
 - Tableau de synthèse des segments — `reports/tableau_synthese_segments.csv`
-- Rapport de 2 à 3 pages (méthode, choix, limites, réponses aux 6 questions du sujet) — `reports/rapport_tp2.pdf`
+- Rapport de 2 à 3 pages (méthode, choix, limites, réponses aux 6 questions du sujet) — `reports/Rapport_ClientScopeRFM_Complete_Corrige.pdf`
 
 ---
 
 ## 9. Auteurs
 
-*(à compléter par l'équipe)*
-
 | Nom | Rôle / parties principales |
 | --- | --------------------------- |
-| …  | …                          |
+| GAYI Komi Selassi | Reporting                          |
+| ACOTIE Sam | Data cleaning, Features RFM, Reporting|
+| ASSI Magnim Boris | Features RFM, Reporting |
+| ⁠Clement TETTEH ASIAKOLEY | Data cleaning, Features RFM, Clustering and k-means, reporting|
+| TCHEDRE Aboudoul | Data cleaning, Features RFM |
+| Leny NAPALA | Features RFM, Clustering and k-means |
+| ⁠Esther MOUKPE | Data cleaning, Clustering and k-means |
+| Othniel AMADOTO | Data cleaning, Clustering and k-means, Project management, CI, Quality Assurance, Reporting|
+| BEGUEDOU Essokila Victoire | Data cleaning, Features RFM |
+| POTCHO Maxime | Clustering and k-means|
+| DJOGUENOU Kossi Elom Hervé | Data cleaning |
+| TENGA Cherif Abdel Azize | Data cleaning, Clustering and k-means, LLM - Rag, Reporting |
+| KADANSAO Koboyo Lucien | Data cleaning, Features RFM |
